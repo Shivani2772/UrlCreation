@@ -1,39 +1,58 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UrlCreation.Data;
+using UrlCreation.Models.Url;
+using UrlCreation.Utilities;
 
 namespace UrlCreation.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("/")]
     public class UrlController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        private readonly IApplicationDbContext dbContext;
 
-        private readonly ILogger<UrlController> _logger;
-
-        public UrlController(ILogger<UrlController> logger)
+        public UrlController(ApplicationDbContext dbContext)
         {
-            _logger = logger;
+            this.dbContext = dbContext;
+        }
+
+        // TODO: 201 or 200?
+        [HttpPost]
+        [ProducesResponseType(typeof(GetUrl), StatusCodes.Status201Created)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public ActionResult<GetUrl> Post([FromBody]Posturl model)
+        {
+            var code = RandomIdGenerator.GetBase62(7);
+            var url = new Entities.Url(code, model.url);
+
+            this.dbContext.Add(url);
+            this.dbContext.SaveChanges();
+
+            var result = new GetUrl
+            {
+                Code = url.Code,
+                Link = $"hi.ai/{url.Code}",
+                LongUrl = url.LongUrl
+            };
+
+            return this.Ok(result);
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        [Route("/")]
+        [ProducesResponseType(typeof(GetUrl), StatusCodes.Status301MovedPermanently)]
+        [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+        public ActionResult<GetUrl> Get([FromRoute] string code)
         {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var result = this.dbContext.DbSetUrl.Single(x => x.Code == code);
+
+            return this.RedirectPermanent(result.LongUrl);
         }
     }
 }

@@ -13,12 +13,12 @@ namespace UrlCreation.Entities
         /// <summary>
         /// Initialize the url.
         /// </summary>
-        /// <param name="shortUrl">Short url.</param>
+        /// <param name="code">Code for url.</param>
         /// <param name="longUrl">long url.</param>
        
-        public Url(string shortUrl, string longUrl)
+        public Url(string code, string longUrl)
         {
-            this.ShortUrl = shortUrl;
+            this.Code = code;
             this.LongUrl = longUrl;
         }
 
@@ -33,17 +33,12 @@ namespace UrlCreation.Entities
         /// <summary>
         /// Gets the primary key of Url.
         /// </summary>
-        public long id { get; private set; }
+        public long Id { get; private set; }
 
         /// <summary>
-        /// Gets the unique code for url.
+        /// Gets the code for the url.
         /// </summary>
         public string Code { get; private set; }
-
-        /// <summary>
-        /// Gets the short url.
-        /// </summary>
-        public string ShortUrl { get; private set; }
 
         /// <summary>
         /// Gets the long url.
