@@ -8,7 +8,7 @@ namespace UrlCreation.Data
 {
     public interface IApplicationDbContext
     {
-        public IQueryable<Entities.Url> DbSetUrl { get; }
+        public IQueryable<Entities.Url> Urls { get; }
 
         public int SaveChanges();
 

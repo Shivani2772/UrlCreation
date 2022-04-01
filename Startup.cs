@@ -29,7 +29,7 @@ namespace UrlCreation
         {
             services.AddDbContext<ApplicationDbContext>(opt =>
             {
-                opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                opt.UseSqlServer(Configuration.GetConnectionString("UrlDatabase"));
             });
 
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();

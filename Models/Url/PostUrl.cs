@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UrlCreation.Models.Url
 {
-    public class Posturl
+    public class PostUrl
     {
         public string url { get; set; }
     }

@@ -12,7 +12,7 @@ using UrlCreation.Utilities;
 namespace UrlCreation.Controllers
 {
     [ApiController]
-    [Route("/")]
+    [Route("/", Name ="Url")]
     public class UrlController : ControllerBase
     {
         private readonly IApplicationDbContext dbContext;
@@ -22,15 +22,15 @@ namespace UrlCreation.Controllers
             this.dbContext = dbContext;
         }
 
-        // TODO: 201 or 200?
         [HttpPost]
         [ProducesResponseType(typeof(GetUrl), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public ActionResult<GetUrl> Post([FromBody]Posturl model)
+        public ActionResult<GetUrl> Post([FromBody]PostUrl model)
         {
             var code = RandomIdGenerator.GetBase62(7);
             var url = new Entities.Url(code, model.url);
 
+            // TODO: check uniqueness of code.
             this.dbContext.Add(url);
             this.dbContext.SaveChanges();
 
@@ -41,16 +41,16 @@ namespace UrlCreation.Controllers
                 LongUrl = url.LongUrl
             };
 
-            return this.Ok(result);
+            return this.CreatedAtRoute("Url", new { code = url.Code }, result);
         }
 
         [HttpGet]
-        [Route("/")]
+        [Route("/{code}")]
         [ProducesResponseType(typeof(GetUrl), StatusCodes.Status301MovedPermanently)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public ActionResult<GetUrl> Get([FromRoute] string code)
         {
-            var result = this.dbContext.DbSetUrl.Single(x => x.Code == code);
+            var result = this.dbContext.Urls.Single(x => x.Code == code);
 
             return this.RedirectPermanent(result.LongUrl);
         }

@@ -30,10 +30,10 @@ namespace UrlCreation.Entities
         }
 
 
-        /// <summary>
-        /// Gets the primary key of Url.
-        /// </summary>
-        public long Id { get; private set; }
+        ///// <summary>
+        ///// Gets the primary key of Url.
+        ///// </summary>
+        //public long Id { get; private set; }
 
         /// <summary>
         /// Gets the code for the url.

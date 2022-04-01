@@ -17,9 +17,9 @@ namespace UrlCreation.Data
         {
         }
 
-        public DbSet<Url> DbSetUrls { get; set; }
+        public DbSet<Url> DbSetUrl { get; set; }
 
-        public IQueryable<Url> DbSetUrl
+        public IQueryable<Url> Urls
         {
             get
             {
@@ -35,16 +35,19 @@ namespace UrlCreation.Data
             }
 
             builder.Entity<Url>()
-                .ToTable(nameof(Url)).HasKey(x => x.Id);
+                .ToTable(nameof(Url)).HasKey(x => x.Code);
 
-            builder.Entity<Url>()
-                .Property(x => x.Id).UseIdentityColumn();
+            //builder.Entity<Url>()
+            //    .Property(x => x.Id).UseIdentityColumn();
 
             builder.Entity<Url>()
                 .Property(x => x.Code).HasMaxLength(10).IsUnicode(false).IsRequired();
 
             builder.Entity<Url>()
                .Property(x => x.LongUrl).HasMaxLength(500).IsUnicode(true).IsRequired();
+
+            builder.Entity<Url>()
+                .HasIndex(x => x.Code).IsUnique().IsClustered();
         }
     }
 }
