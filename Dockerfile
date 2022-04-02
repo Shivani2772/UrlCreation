@@ -1,0 +1,19 @@
+# https://hub.docker.com/_/microsoft-dotnet
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+WORKDIR /source
+
+#Copy csproj and restore as distinct layer
+COPY url/*.sln .
+COPY url/*.csproj .
+# RUN dotnet restore
+
+#Copy everything else and build app
+COPY url/. .
+# WORKDIR /source/url
+RUN dotnet publish -c release -o /app
+
+#Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+WORKDIR /app
+COPY --from=build /app ./
+ENTRYPOINT ["dotnet", "UrlCreation.dll", "--urls", "http://*:80"]

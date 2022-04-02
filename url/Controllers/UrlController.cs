@@ -12,7 +12,7 @@ using UrlCreation.Utilities;
 namespace UrlCreation.Controllers
 {
     [ApiController]
-    [Route("/", Name ="Url")]
+    [Route("/url.click", Name ="Url")]
     public class UrlController : ControllerBase
     {
         private readonly IApplicationDbContext dbContext;
@@ -37,7 +37,7 @@ namespace UrlCreation.Controllers
             var result = new GetUrl
             {
                 Code = url.Code,
-                Link = $"hi.ai/{url.Code}",
+                Link = $"url.click/{url.Code}",
                 LongUrl = url.LongUrl
             };
 
@@ -45,7 +45,7 @@ namespace UrlCreation.Controllers
         }
 
         [HttpGet]
-        [Route("/{code}")]
+        [Route("{code}")]
         [ProducesResponseType(typeof(GetUrl), StatusCodes.Status301MovedPermanently)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
         public ActionResult<GetUrl> Get([FromRoute] string code)

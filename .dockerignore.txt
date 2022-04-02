@@ -1,3 +1,4 @@
-#ignore
-bin/
-obj/
+# directories
+**/bin/
+**/obj/
+**/out/
