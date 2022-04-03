@@ -12,7 +12,7 @@ using UrlCreation.Utilities;
 namespace UrlCreation.Controllers
 {
     [ApiController]
-    [Route("/url.click", Name ="Url")]
+    [Route("/", Name ="Url")]
     public class UrlController : ControllerBase
     {
         private readonly IApplicationDbContext dbContext;
@@ -28,16 +28,22 @@ namespace UrlCreation.Controllers
         public ActionResult<GetUrl> Post([FromBody]PostUrl model)
         {
             var code = RandomIdGenerator.GetBase62(7);
+
+            // check uniqueness of code.
+            //if (this.dbContext.TryCodeUniqueness(code) != null)
+            //{
+            //    return this.Ok()
+            //}
+
             var url = new Entities.Url(code, model.url);
 
-            // TODO: check uniqueness of code.
             this.dbContext.Add(url);
             this.dbContext.SaveChanges();
 
             var result = new GetUrl
             {
                 Code = url.Code,
-                Link = $"url.click/{url.Code}",
+                Link = new Uri($"http://lit.ay/{url.Code}", UriKind.Absolute),
                 LongUrl = url.LongUrl
             };
 

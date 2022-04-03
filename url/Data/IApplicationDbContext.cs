@@ -10,6 +10,8 @@ namespace UrlCreation.Data
     {
         public IQueryable<Entities.Url> Urls { get; }
 
+        public Entities.Url TryCodeUniqueness(string code);
+
         public int SaveChanges();
 
         public EntityEntry<TEntity> Add<TEntity>(TEntity entity)

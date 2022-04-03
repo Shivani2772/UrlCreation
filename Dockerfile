@@ -10,10 +10,10 @@ COPY url/*.csproj .
 #Copy everything else and build app
 COPY url/. .
 # WORKDIR /source/url
-RUN dotnet publish -c release -o /app
+RUN dotnet publish "UrlCreation.csproj" -c release -o /app
 
 #Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build /app ./
-ENTRYPOINT ["dotnet", "UrlCreation.dll", "--urls", "http://*:80"]
+ENTRYPOINT ["dotnet", "UrlCreation.dll"]

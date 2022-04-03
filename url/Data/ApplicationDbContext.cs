@@ -27,6 +27,11 @@ namespace UrlCreation.Data
             }
         }
 
+        public Url TryCodeUniqueness(string code)
+        {
+            return this.DbSetUrl.SingleOrDefault(x => x.Code == code);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             if (builder == null)
@@ -46,8 +51,8 @@ namespace UrlCreation.Data
             builder.Entity<Url>()
                .Property(x => x.LongUrl).HasMaxLength(500).IsUnicode(true).IsRequired();
 
-            builder.Entity<Url>()
-                .HasIndex(x => x.Code).IsUnique().IsClustered();
+            //builder.Entity<Url>()
+            //    .HasIndex(x => x.Code).IsUnique().IsClustered();
         }
     }
 }
