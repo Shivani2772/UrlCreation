@@ -12,7 +12,7 @@ using UrlCreation.Utilities;
 namespace UrlCreation.Controllers
 {
     [ApiController]
-    [Route("/", Name ="Url")]
+    [Route("/")]
     public class UrlController : ControllerBase
     {
         private readonly IApplicationDbContext dbContext;
@@ -29,12 +29,6 @@ namespace UrlCreation.Controllers
         {
             var code = RandomIdGenerator.GetBase62(7);
 
-            // check uniqueness of code.
-            //if (this.dbContext.TryCodeUniqueness(code) != null)
-            //{
-            //    return this.Ok()
-            //}
-
             var url = new Entities.Url(code, model.url);
 
             this.dbContext.Add(url);
@@ -43,7 +37,7 @@ namespace UrlCreation.Controllers
             var result = new GetUrl
             {
                 Code = url.Code,
-                Link = new Uri($"http://lit.ay/{url.Code}", UriKind.Absolute),
+                Link = new Uri($"http://{this.HttpContext.Request.Host}/{url.Code}", UriKind.Absolute),
                 LongUrl = url.LongUrl
             };
 
@@ -51,10 +45,10 @@ namespace UrlCreation.Controllers
         }
 
         [HttpGet]
-        [Route("{code}")]
+        [Route("/{code}", Name = "Url")]
         [ProducesResponseType(typeof(GetUrl), StatusCodes.Status301MovedPermanently)]
         [ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-        public ActionResult<GetUrl> Get([FromRoute] string code)
+        public ActionResult<GetUrl> Get([FromRoute(Name ="code")]string code)
         {
             var result = this.dbContext.Urls.Single(x => x.Code == code);
 

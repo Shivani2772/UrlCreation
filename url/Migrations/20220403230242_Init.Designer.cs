@@ -9,7 +9,7 @@ using UrlCreation.Data;
 namespace UrlCreation.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220402222053_Init")]
+    [Migration("20220403230242_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

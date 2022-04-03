@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +13,8 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using UrlCreation.Data;
 
@@ -49,7 +54,10 @@ namespace UrlCreation
                 app.UseDeveloperExceptionPage();
             }
 
-            DatabaseManagementService.MigrationInitialisation(app);
+            if (env.IsProduction())
+            {
+                DatabaseManagementService.MigrationInitialisation(app);
+            }           
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UrlCreation v1"));
@@ -62,6 +70,7 @@ namespace UrlCreation
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

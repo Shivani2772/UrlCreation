@@ -2,6 +2,10 @@
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
+    "iis": {
+      "applicationUrl": "http://local.lit.ay",
+      "sslPort": 0
+    },
     "iisExpress": {
       "applicationUrl": "http://localhost:6764",
       "sslPort": 0
@@ -17,15 +21,13 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "UrlCreation": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "launchUrl": "swagger",
+    "local.lit.ay": {
+      "commandName": "IIS",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
-      "applicationUrl": "http://lit.ay"
+      "applicationUrl": "http://local.lit.ay"
     },
     "Docker": {
       "commandName": "Docker",
