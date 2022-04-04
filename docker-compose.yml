@@ -8,7 +8,6 @@ services:
     environment:
       SA_PASSWORD: "Secure*PASS1"
       ACCEPT_EULA: "Y"
-    restart: always
   urlcreation:
     image: urlcreation
     container_name: urlcreation
@@ -16,11 +15,10 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "80:80"
-    restart: always
+      - "81:80"
     depends_on:
       - db
-  
+
   
 
 
