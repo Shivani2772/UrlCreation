@@ -54,10 +54,7 @@ namespace UrlCreation
                 app.UseDeveloperExceptionPage();
             }
 
-            if (env.IsProduction())
-            {
-                DatabaseManagementService.MigrationInitialisation(app);
-            }           
+            DatabaseManagementService.MigrationInitialisation(app);
 
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UrlCreation v1"));
