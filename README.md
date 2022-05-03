@@ -19,7 +19,7 @@ Two way to acess endpoints.
         4. Update migration, if required (The app will automatically do it on app start).
         5. Open http://local.lit.ay/swagger/index.html in browser.
       
-      2. Docker (Linux)
+      2. Docker(Linux)
         1. Modify the host file with (127.0.0.1 lit.ay)
         2. Open the folder UrlCreation and search "cmd" on search of file explorer and hit enter.
         3. Once cmd opens run the command (docker-compose build). This will  build the images in the docker-compose.yml file.
